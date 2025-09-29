@@ -18,7 +18,7 @@ import { ChatOpenAI } from "@langchain/openai"
 //     other params... // พารามิเตอร์อื่น ๆ
 // })
 
-// กำหนดข้อความที่ต้องการแปล
+// กำหนดข้อความที่ต้องการแปล 
 // const input = `Translate "I love programming" into Thai.`
 
 // Model จะทำการแปลข้อความ
@@ -111,15 +111,15 @@ export async function POST() {
     // })
 
     // กำหนดข้อความที่ต้องการแปล
-    // const input = `Translate "I love programming" into Thai.`
+    const input = `Translate "I love programming" into Thai.`
 
     // Model จะทำการแปลข้อความ
-    // const response = await model.invoke(input)
+    const response = await model.invoke(input)
 
     // แสดงผลลัพธ์
-    // console.log(response) // ผลลัพธ์: ฉันรักการเขียนโปรแกรม
+    console.log(response) // ผลลัพธ์: ฉันรักการเขียนโปรแกรม
 
-    // return NextResponse.json({ message: "Hello from Chat 01 - Start!" })
+    return NextResponse.json({ message: "Hello from Chat 01 - Start!" })
 
     // try...catch เช็ค error 
     try {
