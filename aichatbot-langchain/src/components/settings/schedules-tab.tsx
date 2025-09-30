@@ -15,7 +15,7 @@ export function SchedulesTab() {
       </div>
 
       <p className="text-sm text-gray-600 dark:text-gray-400">
-        Genius AI can be scheduled to run again after it completes a task. Choose{" "}
+        SkinVision AI can be scheduled to run again after it completes a task. Choose{" "}
         <strong>Schedule from the ⋯ menu in a conversation to set up future runs.</strong>
       </p>
 

@@ -33,7 +33,7 @@ export function NotificationsTab() {
           </div>
         </div>
         <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-          Get notified when Genius AI responds to requests that take time, like research or image generation.
+          Get notified when SkinVision AI responds to requests that take time, like research or image generation.
         </p>
       </div>
 

@@ -39,7 +39,7 @@ export default function AuthLayout({
               <div className="h-12 w-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                 <span className="text-white font-bold text-lg">AI</span>
               </div>
-              <span className="text-2xl font-bold">Genius AI</span>
+              <span className="text-2xl font-bold">SkinVision AI</span>
             </div>
             
             <h1 className="text-4xl font-bold mb-6 leading-tight">

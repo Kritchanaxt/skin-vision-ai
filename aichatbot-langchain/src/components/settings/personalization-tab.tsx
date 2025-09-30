@@ -49,7 +49,7 @@ export function PersonalizationTab() {
             </button>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Let Genius AI save and use memories when responding.
+            Let SkinVision AI save and use memories when responding.
           </p>
 
           {/* Reference chat history */}
@@ -71,7 +71,7 @@ export function PersonalizationTab() {
             </button>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Let Genius AI reference all previous conversations when responding.
+            Let SkinVision AI reference all previous conversations when responding.
           </p>
 
           {/* Manage memories */}
@@ -85,7 +85,7 @@ export function PersonalizationTab() {
           </div>
 
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Genius AI may use Memory to personalize queries to search providers, such as Bing.{" "}
+            SkinVision AI may use Memory to personalize queries to search providers, such as Bing.{" "}
             <button className="text-blue-600 hover:text-blue-700 underline">
               Learn more
             </button>
@@ -122,7 +122,7 @@ export function PersonalizationTab() {
             </button>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Let Genius AI reference all previous recording transcripts and notes when responding.
+            Let SkinVision AI reference all previous recording transcripts and notes when responding.
           </p>
         </div>
       </div>

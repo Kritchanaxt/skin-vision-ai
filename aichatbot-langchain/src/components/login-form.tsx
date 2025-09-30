@@ -56,23 +56,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
-          <div className="mt-2 px-4 bg-yellow-300 p-2 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-800">Email: samit@email.com</p>
-                <p className="text-sm text-gray-800">Password: 123456</p>
-              </div>
-              <Button 
-                type="button" 
-                variant="outline" 
-                size="sm"
-                onClick={handleFillDemo}
-                className="ml-2 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700"
-              >
-                Auto Fill
-              </Button>
-            </div>
-          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>

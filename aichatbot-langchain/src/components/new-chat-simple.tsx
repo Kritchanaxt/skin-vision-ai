@@ -62,7 +62,7 @@ export default function NewChatSimple() {
       
       {/* Header */}
       <div className="bg-white shadow-sm p-4 border-b">
-        <h1 className="text-xl font-semibold text-gray-800 text-center">Genius AI Chatbot</h1>
+        <h1 className="text-xl font-semibold text-gray-800 text-center">SkinVision AI Chatbot</h1>
         <div className="absolute top-4 right-4 flex items-center gap-3">
           {displayName && (
             <div className="text-sm text-gray-600">

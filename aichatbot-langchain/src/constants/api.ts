@@ -1,8 +1,8 @@
-// export const API_BASE = '/api/chat_09_rag_tool_calling'
-export const API_BASE = '/api/chat_07_tool_calling_postgres'
+export const API_BASE = '/api/chat_09_rag_tool_calling'
+// export const API_BASE = '/api/chat_08_rag'
 
-// export const API_BASE_SESSION = '/api/chat_09_rag_tool_calling/session'
-export const API_BASE_SESSION = '/api/chat_07_tool_calling_postgres/session'
+export const API_BASE_SESSION = '/api/chat_09_rag_tool_calling/session'
+// export const API_BASE_SESSION = '/api/chat_08_rag/session'
 
 
 export function buildApiUrl(endpoint: string, params?: Record<string, string | number | boolean>): string {

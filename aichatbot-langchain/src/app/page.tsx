@@ -3,7 +3,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Home | Genius AI Chatbot",
+  title: "Home | SkinVision AI Chatbot",
   description: "A chatbot powered by AI and built with Langchain.js and Next.js",
 }
 
@@ -42,7 +42,7 @@ export default function Home() {
 
             {/* Main Heading */}
             <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl md:text-6xl lg:text-7xl">
-              <span className="block">Genius AI</span>
+              <span className="block">SkinVision AI</span>
               <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Chatbot
               </span>
@@ -196,10 +196,10 @@ export default function Home() {
               <div className="h-6 w-6 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
                 <span className="text-white font-bold text-xs">AI</span>
               </div>
-              <span className="text-lg font-bold text-slate-900 dark:text-white">Genius AI Chatbot</span>
+              <span className="text-lg font-bold text-slate-900 dark:text-white">SkinVision AI Chatbot</span>
             </div>
             <p className="text-slate-600 dark:text-slate-300">
-              © 2025 Genius AI Chatbot. สร้างด้วย ❤️ และ AI
+              © 2025 SkinVision AI Chatbot. สร้างด้วย ❤️ และ AI
             </p>
           </div>
         </div>

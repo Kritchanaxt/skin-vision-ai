@@ -451,7 +451,7 @@ export function NewChat() {
                     <span className="text-white font-bold text-2xl">AI</span>
                   </div>
                   <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
-                    Welcome to Genius AI
+                    Welcome to SkinVision AI
                   </h1>
                   <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
                     ยินดีต้อนรับสู่ AI Chatbot ที่ขับเคลื่อนด้วย LangChain และ OpenAI

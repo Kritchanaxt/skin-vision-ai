@@ -45,7 +45,7 @@ export function ConnectorsTab() {
           Enabled connectors
         </Label>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Genius AI can access information from connected apps. Your permissions are always respected.{" "}
+          SkinVision AI can access information from connected apps. Your permissions are always respected.{" "}
           <button className="text-blue-600 hover:text-blue-700 underline">
             Learn more
           </button>

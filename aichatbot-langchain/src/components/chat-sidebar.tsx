@@ -721,7 +721,7 @@ export function ChatSidebar({ display_name, email, userId }: ChatSidebarProps) {
           
           {/* App Name - ซ่อนเมื่อ sidebar collapsed */}
           <div className="text-md font-bold text-slate-900 dark:text-white tracking-tight group-data-[collapsible=icon]:hidden">
-            Genius AI
+            SkinVision AI
           </div>
         </div>
         
@@ -909,13 +909,13 @@ export function ChatSidebar({ display_name, email, userId }: ChatSidebarProps) {
                   Upgrade plan
                 </Button>
 
-                {/* Customize Genius AI Button */}
+                {/* Customize SkinVision AI Button */}
                 <Button
                   variant="ghost"
                   className="w-full justify-start gap-3 h-10 text-left px-3"
                 >
                   <Settings className="h-4 w-4" />
-                  Customize Genius AI
+                  Customize SkinVision AI
                 </Button>
 
                 {/* Settings Button */}

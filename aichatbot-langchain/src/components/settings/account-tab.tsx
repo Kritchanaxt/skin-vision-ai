@@ -34,10 +34,10 @@ export function AccountTab() {
         </Button>
       </div>
 
-      {/* Genius AI builder profile */}
+      {/* SkinVision AI builder profile */}
       <div>
         <Label className="text-lg font-medium text-gray-900 dark:text-white mb-4 block">
-          Genius AI builder profile
+          SkinVision AI builder profile
         </Label>
         
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">

@@ -59,13 +59,13 @@ export function SecurityTab() {
         </p>
       </div>
 
-      {/* Secure sign in with Genius AI */}
+      {/* Secure sign in with SkinVision AI */}
       <div>
         <Label className="text-lg font-medium text-gray-900 dark:text-white mb-2 block">
-          Secure sign in with Genius AI
+          Secure sign in with SkinVision AI
         </Label>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Sign in to websites and apps across the internet with the trusted security of Genius AI.{" "}
+          Sign in to websites and apps across the internet with the trusted security of SkinVision AI.{" "}
           <button className="text-blue-600 hover:text-blue-700 underline">
             Learn more
           </button>
@@ -73,7 +73,7 @@ export function SecurityTab() {
 
         <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
           <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-            You haven&apos;t used Genius AI to sign into any websites or apps yet. Once you do, they&apos;ll show up here.
+            You haven&apos;t used SkinVision AI to sign into any websites or apps yet. Once you do, they&apos;ll show up here.
           </p>
         </div>
       </div>
