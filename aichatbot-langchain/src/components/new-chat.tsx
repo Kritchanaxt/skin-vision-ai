@@ -51,8 +51,10 @@ import {
   Globe,
   Mic,
   MoreHorizontal,
-  Plus,
   Square,
+  Paperclip,
+  X,
+  File,
 } from "lucide-react"                                                        // Icons จาก Lucide React
 import { useRef, useState, useEffect } from "react"                          // React Hooks
 import { useChatContext } from "@/contexts/chat-context"                     // Context สำหรับจัดการสถานะ chat
@@ -174,9 +176,46 @@ export function NewChat() {
    */
   const [loadedMessages, setLoadedMessages] = useState<MessageType[]>([])    // เก็บข้อความที่โหลดจากประวัติ
 
+  /**
+   * ไฟล์ที่แนบมากับข้อความ
+   * เก็บรายการไฟล์ที่ผู้ใช้เลือกเพื่อส่งไปกับข้อความ
+   */
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([])
+  
+  /**
+   * Reference สำหรับ file input element
+   * ใช้สำหรับเปิด file dialog
+   */
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   // ============================================================================
   // STEP 2: FUNCTION DEFINITIONS - การประกาศฟังก์ชัน
   // ============================================================================
+
+  /**
+   * จัดการการเลือกไฟล์
+   * รับ event จาก file input และเพิ่มไฟล์ลงใน attachedFiles
+   */
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || [])
+    setAttachedFiles(prev => [...prev, ...files])
+  }
+
+  /**
+   * ลบไฟล์ที่แนบ
+   * รับ index ของไฟล์และลบออกจาก attachedFiles
+   */
+  const removeAttachedFile = (index: number) => {
+    setAttachedFiles(prev => prev.filter((_, i) => i !== index))
+  }
+
+  /**
+   * เปิด file dialog
+   * ใช้ ref เพื่อเปิด file input dialog
+   */
+  const openFileDialog = () => {
+    fileInputRef.current?.click()
+  }
 
   const loadChatHistory = async (sessionIdToLoad: string) => {
     // ตรวจสอบว่ามี sessionId หรือไม่
@@ -327,20 +366,35 @@ export function NewChat() {
     // ตรวจสอบ userId และข้อความว่าง
     if (!prompt.trim() || !userId) return
 
+    // สร้างข้อความที่จะส่ง พร้อมข้อมูลไฟล์
+    let messageText = prompt.trim()
+    
+    // เพิ่มข้อมูลไฟล์ในข้อความ (เป็น placeholder)
+    if (attachedFiles.length > 0) {
+      const fileList = attachedFiles.map(file => `📎 ${file.name} (${file.type})`).join('\n')
+      messageText = `${messageText}\n\nไฟล์แนบ:\n${fileList}`
+    }
+
     const messageToSend = {
       role: 'user' as const,
-      parts: [{ type: 'text' as const, text: prompt.trim() }],
+      parts: [{ type: 'text' as const, text: messageText }],
     }
 
     sendMessage(messageToSend, {
       body: {
         userId: userId,                                                      // ส่ง user ID สำหรับการระบุตัวตน
         sessionId: sessionId,                                               // ส่ง session ID สำหรับความต่อเนื่อง
+        attachedFiles: attachedFiles.map(file => ({                        // ส่งข้อมูลไฟล์ (placeholder)
+          name: file.name,
+          type: file.type,
+          size: file.size
+        })),
       },
     })
 
     // รีเซ็ต UI state
     setPrompt("")                                                            // ล้างข้อความใน input
+    setAttachedFiles([])                                                     // ล้างไฟล์ที่แนบ
     setShowWelcome(false)                                                    // ซ่อนหน้า welcome
   }
 
@@ -599,6 +653,36 @@ export function NewChat() {
             <div className="flex flex-col">
               
               {/* ============================================================================ */}
+              {/* ATTACHED FILES DISPLAY - แสดงไฟล์ที่แนบ */}
+              {/* ============================================================================ */}
+              
+              {attachedFiles.length > 0 && (
+                <div className="px-4 pt-3 pb-2">
+                  <div className="flex flex-wrap gap-2">
+                    {attachedFiles.map((file, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-lg px-3 py-2 text-sm"
+                      >
+                        <File size={14} className="text-slate-500" />
+                        <span className="text-slate-700 dark:text-slate-300 max-w-[150px] truncate">
+                          {file.name}
+                        </span>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-4 hover:bg-slate-200 dark:hover:bg-slate-700"
+                          onClick={() => removeAttachedFile(index)}
+                        >
+                          <X size={12} />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ============================================================================ */}
               {/* TEXTAREA INPUT - ช่องพิมพ์ข้อความ */}
               {/* ============================================================================ */}
               
@@ -617,16 +701,27 @@ export function NewChat() {
                 {/* Left Actions Group - กลุ่มปุ่มด้านซ้าย */}
                 <div className="flex items-center gap-2">
                   
-                  {/* Add Action Button - ปุ่มเพิ่ม action */}
-                  <PromptInputAction tooltip="Add a new action">
+                  {/* File Upload Button - ปุ่มแนบไฟล์ */}
+                  <PromptInputAction tooltip="แนบไฟล์">
                     <Button
                       variant="outline"
                       size="icon"
                       className="size-9 rounded-full"
+                      onClick={openFileDialog}
                     >
-                      <Plus size={18} />
+                      <Paperclip size={18} />
                     </Button>
                   </PromptInputAction>
+                  
+                  {/* Hidden File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept=".pdf,.doc,.docx,.txt,.csv,.jpg,.jpeg,.png,.gif"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
 
                   {/* Search Button - ปุ่มค้นหา */}
                   <PromptInputAction tooltip="Search">

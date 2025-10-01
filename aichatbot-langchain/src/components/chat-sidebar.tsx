@@ -1,6 +1,16 @@
 /**
- * ===============================================
- * Chat Sidebar Component - แถบด้านข้างสำหรับการนำทาง
+ * ==========================================} from "@/components/ui/popover"                                          // Popover components
+import { Input } from "@/components/ui/input"                               // Input component
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"                                    // Alert Dialog componentshat Sidebar Component - แถบด้านข้างสำหรับการนำทาง
  * ===============================================
  * 
  * Purpose: แถบด้านข้างสำหรับนำทางและจัดการประวัติการสนทนา
@@ -49,6 +59,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"                                             // Popover สำหรับ user menu
+import { Input } from "@/components/ui/input"                               // Input component
 import {
   AlertDialog,
   AlertDialogAction,
@@ -77,7 +88,7 @@ import {
 import { LogoutButton } from "@/components/logout-button"                   // Component สำหรับ logout
 import Link from "next/link"                                                 // Next.js Link สำหรับ navigation
 import { usePathname, useRouter } from "next/navigation"                     // Next.js hooks สำหรับ routing
-import { useState, useEffect, useRef } from "react"                          // React hooks
+import { useState, useEffect, useRef, useMemo } from "react"                // React hooks
 import { createPortal } from "react-dom"                                     // Portal สำหรับ modal rendering
 import { useChatContext } from "@/contexts/chat-context"                     // Context สำหรับ chat state
 import { useChatSessions } from "@/hooks/use-chat-sessions"                  // Custom hook สำหรับ chat sessions
@@ -543,6 +554,16 @@ export function ChatSidebar({ display_name, email, userId }: ChatSidebarProps) {
   const [sessionToDelete, setSessionToDelete] = useState<string | null>(null) // ID ของ session ที่จะลบ
   
   /**
+   * Search State Variables
+   * 
+   * Variables:
+   * - searchQuery: คำค้นหาสำหรับการค้นหาประวัติแชท
+   * - isSearchOpen: สถานะการเปิด/ปิด search input
+   */
+  const [searchQuery, setSearchQuery] = useState('')                        // คำค้นหาสำหรับการค้นหาประวัติแชท
+  const [isSearchOpen, setIsSearchOpen] = useState(false)                   // สถานะการเปิด/ปิด search input
+  
+  /**
    * Custom Hook สำหรับจัดการ Chat Sessions
    * 
    * Returns:
@@ -554,13 +575,30 @@ export function ChatSidebar({ display_name, email, userId }: ChatSidebarProps) {
   const { sessions, loading, fetchSessions, deleteSession } = useChatSessions(userId)
   
   /**
+   * Filter sessions ตามคำค้นหา
+   * 
+   * Purpose:
+   * - กรองรายการ sessions ตามคำค้นหาที่ผู้ใช้ป้อน
+   * - ค้นหาใน title และ first_message ของ sessions
+   */
+  const filteredSessions = useMemo(() => {
+    if (!searchQuery.trim()) return sessions
+    
+    return sessions.filter(session => {
+      const titleMatch = session.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      const messageMatch = session.first_message?.toLowerCase().includes(searchQuery.toLowerCase())
+      return titleMatch || messageMatch
+    })
+  }, [sessions, searchQuery])
+  
+  /**
    * จัดกลุ่ม sessions ตามวันที่
    * 
    * Purpose:
    * - จัดระเบียบการแสดงผลให้ดูง่าย
    * - กลุ่มตามช่วงเวลา (Today, Yesterday, Last 7 days, etc.)
    */
-  const groupedSessions = groupSessionsByDate(sessions)                      // จัดกลุ่ม sessions ตามวันที่
+  const groupedSessions = groupSessionsByDate(filteredSessions)              // จัดกลุ่ม filtered sessions ตามวันที่
 
   // ============================================================================
   // STEP 2: EFFECTS - การจัดการ Side Effects
@@ -735,11 +773,40 @@ export function ChatSidebar({ display_name, email, userId }: ChatSidebarProps) {
           <Button
             variant="ghost"
             className="size-8"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
           >
             <Search className="size-4" />
           </Button>
         </div>
       </SidebarHeader>
+      
+      {/* ============================================================================ */}
+      {/* SEARCH INPUT - ช่องค้นหาประวัติแชท */}
+      {/* ============================================================================ */}
+      
+      {isSearchOpen && (
+        <div className="px-3 pb-3 group-data-[collapsible=icon]:hidden">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-4 text-slate-400" />
+            <Input
+              placeholder="ค้นหาประวัติการสนทนา..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+            />
+            {searchQuery && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 size-7"
+                onClick={() => setSearchQuery('')}
+              >
+                <X className="size-3" />
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ============================================================================ */}
       {/* SIDEBAR CONTENT - เนื้อหาหลักของ Sidebar */}
@@ -824,11 +891,22 @@ export function ChatSidebar({ display_name, email, userId }: ChatSidebarProps) {
         {/* ============================================================================ */}
         
         {/* Empty state */}
-        {!loading && groupedSessions.length === 0 && (
+        {!loading && sessions.length === 0 && (
           <SidebarGroup className="group-data-[collapsible=icon]:hidden">
             <div className="px-4 py-6 text-center text-gray-500 dark:text-gray-400 text-sm">
               No chat history yet.<br />
               Start a new conversation!
+            </div>
+          </SidebarGroup>
+        )}
+        
+        {/* No search results state */}
+        {!loading && searchQuery && filteredSessions.length === 0 && sessions.length > 0 && (
+          <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+            <div className="px-4 py-6 text-center text-gray-500 dark:text-gray-400 text-sm">
+              <Search className="mx-auto size-8 mb-2 opacity-50" />
+              ไม่พบผลการค้นหา<br />
+              ลองใช้คำค้นหาอื่น
             </div>
           </SidebarGroup>
         )}
