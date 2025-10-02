@@ -199,7 +199,7 @@ open http://localhost:3000/detect
 
 ---
 
-## �🛠️ เทคโนโลยีที่ใช้
+## 🛠️ เทคโนโลยีที่ใช้
 
 - **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS v4, Shadcn/UI
 - **AI/ML**: 
@@ -344,170 +344,190 @@ npm run dev
 ## 📁 โครงสร้างโปรเจ็กต์
 
 ```
-aichatbot-langchain-nextjs/
-├── src/
-│   ├── app/
-│   │   ├── auth/
-│   │   │   ├── confirm/
-│   │   │   │   └── route.ts          # Email confirmation endpoint
-│   │   │   ├── error/
-│   │   │   │   └── page.tsx          # Authentication error page
-│   │   │   ├── forgot-password/
-│   │   │   │   └── page.tsx          # Forgot password page
-│   │   │   ├── login/
-│   │   │   │   └── page.tsx          # Login page
-│   │   │   ├── sign-up/
-│   │   │   │   └── page.tsx          # Registration page
-│   │   │   ├── sign-up-success/
-│   │   │   │   └── page.tsx          # Registration success page
-│   │   │   └── update-password/
-│   │   │       └── page.tsx          # Update password page
-│   │   ├── api/
-│   │   │   ├── chat/
-│   │   │   │   └── route.ts          # Chat API endpoint (production)
-│   │   │   ├── chat_01_start/
-│   │   │   │   └── route.ts          # Step 1: Basic chat setup
-│   │   │   ├── chat_02_request/
-│   │   │   │   └── route.ts          # Step 2: Request handling
-│   │   │   ├── chat_03_template/
-│   │   │   │   └── route.ts          # Step 3: Prompt templates
-│   │   │   ├── chat_04_stream/
-│   │   │   │   └── route.ts          # Step 4: Streaming responses
-│   │   │   ├── chat_05_history/
-│   │   │   │   └── route.ts          # Step 5: Chat history management
-│   │   │   ├── chat_06_history_optimistic/
-│   │   │   │   ├── route.ts          # Step 6.1: Advanced optimistic history
-│   │   │   │   └── session/
-│   │   │   │       └── route.ts      # Session management endpoints
-│   │   │   ├── chat_06_history_optimize/
-│   │   │   │   ├── route.ts          # Step 6.2: History optimization & summarization
-│   │   │   │   └── session/
-│   │   │   │       └── route.ts      # Optimized session endpoints
-│   │   │   ├── chat_07_tool_calling_postgres/
-│   │   │   │   ├── route.ts          # Step 7.1: Tool calling with PostgreSQL
-│   │   │   │   └── session/
-│   │   │   │       └── route.ts      # Session management with tools
-│   │   │   ├── chat_07_tool_calling_sample/
-│   │   │   │   ├── route.ts          # Step 7.2: Sample tool calling
-│   │   │   │   └── session/
-│   │   │   │       └── route.ts      # Sample session endpoints
-│   │   │   ├── chat_08_rag/
-│   │   │   │   ├── route.ts          # Step 8: RAG (Retrieval Augmented Generation)
-│   │   │   │   └── session/
-│   │   │   │       └── route.ts      # RAG session management
-│   │   │   ├── chat_09_rag_tool_calling/
-│   │   │   │   ├── route.ts          # Step 9: RAG + Tool Calling Integration
-│   │   │   │   └── session/
-│   │   │   │       └── route.ts      # RAG + Tool calling session management
-│   │   │   ├── document_loader_embeding_pgvector/
-│   │   │   │   ├── text_csv/
-│   │   │   │   │   └── route.ts      # CSV document processing & embeddings
-│   │   │   │   └── text_csv_pdf/
-│   │   │   │       └── route.ts      # PDF + CSV document processing & embeddings
-│   │   │   └── route.ts              # Base API routes (GET, POST, PUT, DELETE)
-│   │   ├── chat/
-│   │   │   ├── layout.tsx            # Chat layout (protected)
-│   │   │   ├── page.tsx              # Chat interface (authenticated users only)
-│   │   │   └── [id]/
-│   │   │       └── page.tsx          # Individual chat conversation page
-│   │   ├── favicon.ico               # App favicon
-│   │   ├── globals.css               # Global styles with Tailwind v4 + KaTeX CSS
-│   │   ├── layout.tsx                # Root layout
-│   │   └── page.tsx                  # Landing/home page
-│   ├── components/
-│   │   ├── ui/
-│   │   │   ├── alert-dialog.tsx      # Alert dialog component (Shadcn/UI)
-│   │   │   ├── avatar.tsx            # Avatar component (Shadcn/UI)
-│   │   │   ├── button.tsx            # Button component (Shadcn/UI)
-│   │   │   ├── card.tsx              # Card component (Shadcn/UI)
-│   │   │   ├── chat-container.tsx    # Chat container component
-│   │   │   ├── code-block.tsx        # Code syntax highlighting component
-│   │   │   ├── dropdown-menu.tsx     # Dropdown menu component (Shadcn/UI)
-│   │   │   ├── input.tsx             # Input component (Shadcn/UI)
-│   │   │   ├── label.tsx             # Label component (Shadcn/UI)
-│   │   │   ├── markdown.tsx          # Markdown + LaTeX rendering component
-│   │   │   ├── message.tsx           # Chat message component
-│   │   │   ├── popover.tsx           # Popover component (Shadcn/UI)
-│   │   │   ├── prompt-input.tsx      # Enhanced prompt input component
-│   │   │   ├── scroll-button.tsx     # Scroll to bottom button
-│   │   │   ├── separator.tsx         # Separator component (Shadcn/UI)
-│   │   │   ├── sheet.tsx             # Sheet component (Shadcn/UI)
-│   │   │   ├── sidebar.tsx           # Sidebar component
-│   │   │   ├── skeleton.tsx          # Loading skeleton component
-│   │   │   ├── table.tsx             # Table component (Shadcn/UI)
-│   │   │   ├── textarea.tsx          # Textarea component (Shadcn/UI)
-│   │   │   ├── theme-toggle.tsx      # Dark/Light mode toggle
-│   │   │   └── tooltip.tsx           # Tooltip component (Shadcn/UI)
-│   │   ├── settings/
-│   │   │   ├── account-tab.tsx       # Account settings tab
-│   │   │   ├── connectors-tab.tsx    # API connectors settings
-│   │   │   ├── data-controls-tab.tsx # Data control settings
-│   │   │   ├── general-tab.tsx       # General settings tab
-│   │   │   ├── index.ts              # Settings components exports
-│   │   │   ├── notifications-tab.tsx # Notifications settings
-│   │   │   ├── personalization-tab.tsx # UI personalization settings
-│   │   │   ├── schedules-tab.tsx     # Schedules settings
-│   │   │   └── security-tab.tsx      # Security settings tab
-│   │   ├── chat-history.tsx          # Chat history management component
-│   │   ├── chat-sidebar.tsx          # Chat sidebar with conversation history
-│   │   ├── forgot-password-form.tsx  # Forgot password form (Supabase UI)
-│   │   ├── login-form.tsx            # Login form component (Supabase UI)
-│   │   ├── logout-button.tsx         # Logout button component (Supabase UI)
-│   │   ├── model-selector.tsx        # AI model selection component
-│   │   ├── new-chat-simple.tsx       # Simple new chat button
-│   │   ├── new-chat.tsx              # Advanced new chat component
-│   │   ├── sign-up-form.tsx          # Registration form (Supabase UI)
-│   │   └── update-password-form.tsx  # Update password form (Supabase UI)
-│   ├── constants/
-│   │   ├── api.ts                    # API endpoints constants and URL builders
-│   │   └── models.ts                 # AI model constants and configurations
-│   ├── contexts/
-│   │   └── chat-context.tsx          # Chat context provider for state management
-│   ├── hooks/
-│   │   ├── use-chat-history.ts       # Custom hook for chat history management
-│   │   ├── use-chat-sessions.ts      # Custom hook for session management
-│   │   └── use-mobile.ts             # Custom hook for mobile detection
-│   ├── lib/
-│   │   ├── client.ts                 # Supabase client configurations
-│   │   ├── custom-chat-transport.ts  # Custom chat transport layer
-│   │   ├── database.ts               # PostgreSQL connection pool utilities
-│   │   ├── middleware.ts             # Authentication middlewares
-│   │   ├── server.ts                 # Server-side Supabase utilities
-│   │   ├── theme-provider.tsx        # Theme provider for dark/light mode
-│   │   └── utils.ts                  # Utility functions (Tailwind merge, etc.)
-│   └── middleware.ts                 # Next.js middleware for auth protection
-├── data/                             # Data files for RAG
-│   ├── pdf/
-│   │   └── product.pdf               # Sample PDF document for RAG testing
-│   └── text_csv/
-│       ├── information.txt           # Sample text file
-│       └── product.csv               # Sample CSV file for structured data
-├── public/                           # Static assets
-│   ├── file.svg
-│   ├── globe.svg
-│   ├── next.svg
-│   ├── vercel.svg
-│   └── window.svg
-├── .env                              # Environment variables (สร้างไฟล์นี้)
-├── .env.example                      # Template สำหรับ environment variables
-├── .gitignore                        # Git ignore rules
-├── components.json                   # Shadcn/UI configuration
-├── Day1_Note.md                      # บันทึกการอบรม Day 1
-├── Day2_Note.md                      # บันทึกการอบรม Day 2
-├── Day3_Note.md                      # บันทึกการอบรม Day 3
-├── Day4_Note.md                      # บันทึกการอบรม Day 4
-├── Day5_Note.md                      # บันทึกการอบรม Day 5
-├── Day6_Note.md                      # บันทึกการอบรม Day 6
-├── Day7_Note.md                      # บันทึกการอบรม Day 7
-├── Day8_Note.md                      # บันทึกการอบรม Day 8
-├── eslint.config.mjs                 # ESLint configuration
-├── next-env.d.ts                     # Next.js TypeScript declarations
-├── next.config.ts                    # Next.js configuration
-├── package.json                      # Dependencies และ scripts
-├── postcss.config.mjs                # PostCSS configuration
-├── RAG_TROUBLESHOOTING.md            # RAG troubleshooting guide
-├── tsconfig.json                     # TypeScript configuration
-└── README.md                         # Documentation (ไฟล์นี้)
+skin-vision-ai/
+├── aichatbot-langchain/              # โฟลเดอร์หลักของแอปพลิเคชัน
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── auth/                 # ระบบ Authentication
+│   │   │   │   ├── confirm/
+│   │   │   │   │   └── route.ts      # Email confirmation endpoint
+│   │   │   │   ├── error/
+│   │   │   │   │   └── page.tsx      # Authentication error page
+│   │   │   │   ├── forgot-password/
+│   │   │   │   │   └── page.tsx      # Forgot password page
+│   │   │   │   ├── login/
+│   │   │   │   │   └── page.tsx      # Login page
+│   │   │   │   ├── sign-up/
+│   │   │   │   │   └── page.tsx      # Registration page
+│   │   │   │   ├── sign-up-success/
+│   │   │   │   │   └── page.tsx      # Registration success page
+│   │   │   │   ├── update-password/
+│   │   │   │   │   └── page.tsx      # Update password page
+│   │   │   │   └── layout.tsx        # Auth layout
+│   │   │   ├── api/                  # API Routes
+│   │   │   │   ├── analyze-acne/
+│   │   │   │   │   └── route.ts      # 🔬 Acne analysis with LLM endpoint
+│   │   │   │   ├── detect-acne/
+│   │   │   │   │   └── route.ts      # 🔬 Acne detection with YOLOv7 endpoint
+│   │   │   │   ├── chat/
+│   │   │   │   │   └── route.ts      # Chat API endpoint (production)
+│   │   │   │   ├── chat_01_start/
+│   │   │   │   │   └── route.ts      # Step 1: Basic chat setup
+│   │   │   │   ├── chat_02_request/
+│   │   │   │   │   └── route.ts      # Step 2: Request handling
+│   │   │   │   ├── chat_03_template/
+│   │   │   │   │   └── route.ts      # Step 3: Prompt templates
+│   │   │   │   ├── chat_04_stream/
+│   │   │   │   │   └── route.ts      # Step 4: Streaming responses
+│   │   │   │   ├── chat_05_history/
+│   │   │   │   │   └── route.ts      # Step 5: Chat history management
+│   │   │   │   ├── chat_06_history_optimistic/
+│   │   │   │   │   ├── route.ts      # Step 6.1: Advanced optimistic history
+│   │   │   │   │   └── session/
+│   │   │   │   │       └── route.ts  # Session management endpoints
+│   │   │   │   ├── chat_06_history_optimize/
+│   │   │   │   │   ├── route.ts      # Step 6.2: History optimization & summarization
+│   │   │   │   │   └── session/
+│   │   │   │   │       └── route.ts  # Optimized session endpoints
+│   │   │   │   ├── chat_07_tool_calling_postgres/
+│   │   │   │   │   ├── route.ts      # Step 7.1: Tool calling with PostgreSQL
+│   │   │   │   │   └── session/
+│   │   │   │   │       └── route.ts  # Session management with tools
+│   │   │   │   ├── chat_07_tool_calling_sample/
+│   │   │   │   │   ├── route.ts      # Step 7.2: Sample tool calling
+│   │   │   │   │   └── session/
+│   │   │   │   │       └── route.ts  # Sample session endpoints
+│   │   │   │   ├── chat_08_rag/
+│   │   │   │   │   ├── route.ts      # Step 8: RAG (Retrieval Augmented Generation)
+│   │   │   │   │   └── session/
+│   │   │   │   │       └── route.ts  # RAG session management
+│   │   │   │   ├── chat_09_rag_tool_calling/
+│   │   │   │   │   ├── route.ts      # Step 9: RAG + Tool Calling Integration
+│   │   │   │   │   └── session/
+│   │   │   │   │       └── route.ts  # RAG + Tool calling session management
+│   │   │   │   ├── document_loader_embeding_pgvector/
+│   │   │   │   │   ├── text_csv/
+│   │   │   │   │   │   └── route.ts  # CSV document processing & embeddings
+│   │   │   │   │   └── text_csv_pdf/
+│   │   │   │   │       └── route.ts  # PDF + CSV document processing & embeddings
+│   │   │   │   └── route.ts          # Base API routes (GET, POST, PUT, DELETE)
+│   │   │   ├── chat/                 # Chat Pages
+│   │   │   │   ├── layout.tsx        # Chat layout (protected)
+│   │   │   │   ├── page.tsx          # Chat interface (authenticated users only)
+│   │   │   │   ├── page_archive.tsx  # Archived chat page
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx      # Individual chat conversation page
+│   │   │   ├── detect/               # 🔬 Acne Detection Page
+│   │   │   │   └── page.tsx          # Acne detection interface with YOLOv7
+│   │   │   ├── favicon.ico           # App favicon
+│   │   │   ├── globals.css           # Global styles with Tailwind v4 + KaTeX CSS
+│   │   │   ├── layout.tsx            # Root layout
+│   │   │   └── page.tsx              # Landing/home page
+│   │   ├── components/
+│   │   │   ├── ui/                   # Shadcn/UI Components
+│   │   │   │   ├── alert-dialog.tsx  # Alert dialog component
+│   │   │   │   ├── avatar.tsx        # Avatar component
+│   │   │   │   ├── button.tsx        # Button component
+│   │   │   │   ├── card.tsx          # Card component
+│   │   │   │   ├── chat-container.tsx # Chat container component
+│   │   │   │   ├── code-block.tsx    # Code syntax highlighting component
+│   │   │   │   ├── dropdown-menu.tsx # Dropdown menu component
+│   │   │   │   ├── input.tsx         # Input component
+│   │   │   │   ├── label.tsx         # Label component
+│   │   │   │   ├── markdown.tsx      # Markdown + LaTeX rendering component
+│   │   │   │   ├── message.tsx       # Chat message component
+│   │   │   │   ├── popover.tsx       # Popover component
+│   │   │   │   ├── progress.tsx      # Progress bar component
+│   │   │   │   ├── prompt-input.tsx  # Enhanced prompt input component
+│   │   │   │   ├── scroll-button.tsx # Scroll to bottom button
+│   │   │   │   ├── separator.tsx     # Separator component
+│   │   │   │   ├── sheet.tsx         # Sheet component
+│   │   │   │   ├── sidebar.tsx       # Sidebar component
+│   │   │   │   ├── skeleton.tsx      # Loading skeleton component
+│   │   │   │   ├── slider.tsx        # Slider component
+│   │   │   │   ├── table.tsx         # Table component
+│   │   │   │   ├── tabs.tsx          # Tabs component
+│   │   │   │   ├── textarea.tsx      # Textarea component
+│   │   │   │   ├── theme-toggle.tsx  # Dark/Light mode toggle
+│   │   │   │   └── tooltip.tsx       # Tooltip component
+│   │   │   ├── settings/             # Settings Components
+│   │   │   │   ├── account-tab.tsx   # Account settings tab
+│   │   │   │   ├── connectors-tab.tsx # API connectors settings
+│   │   │   │   ├── data-controls-tab.tsx # Data control settings
+│   │   │   │   ├── general-tab.tsx   # General settings tab
+│   │   │   │   ├── index.ts          # Settings components exports
+│   │   │   │   ├── notifications-tab.tsx # Notifications settings
+│   │   │   │   ├── personalization-tab.tsx # UI personalization settings
+│   │   │   │   ├── schedules-tab.tsx # Schedules settings
+│   │   │   │   └── security-tab.tsx  # Security settings tab
+│   │   │   ├── acne-detection.tsx    # 🔬 Acne detection component with YOLOv7
+│   │   │   ├── chat-history.tsx      # Chat history management component
+│   │   │   ├── chat-sidebar.tsx      # Chat sidebar with conversation history
+│   │   │   ├── forgot-password-form.tsx # Forgot password form (Supabase UI)
+│   │   │   ├── login-form.tsx        # Login form component (Supabase UI)
+│   │   │   ├── logout-button.tsx     # Logout button component (Supabase UI)
+│   │   │   ├── model-selector.tsx    # AI model selection component
+│   │   │   ├── new-chat-simple.tsx   # Simple new chat button
+│   │   │   ├── new-chat.tsx          # Advanced new chat component
+│   │   │   ├── sign-up-form.tsx      # Registration form (Supabase UI)
+│   │   │   └── update-password-form.tsx # Update password form (Supabase UI)
+│   │   ├── constants/
+│   │   │   ├── api.ts                # API endpoints constants and URL builders
+│   │   │   └── models.ts             # AI model constants and configurations
+│   │   ├── contexts/
+│   │   │   └── chat-context.tsx      # Chat context provider for state management
+│   │   ├── hooks/
+│   │   │   ├── use-chat-history.ts   # Custom hook for chat history management
+│   │   │   ├── use-chat-sessions.ts  # Custom hook for session management
+│   │   │   └── use-mobile.ts         # Custom hook for mobile detection
+│   │   ├── lib/
+│   │   │   ├── client.ts             # Supabase client configurations
+│   │   │   ├── custom-chat-transport.ts # Custom chat transport layer
+│   │   │   ├── database.ts           # PostgreSQL connection pool utilities
+│   │   │   ├── middleware.ts         # Authentication middlewares
+│   │   │   ├── server.ts             # Server-side Supabase utilities
+│   │   │   ├── theme-provider.tsx    # Theme provider for dark/light mode
+│   │   │   └── utils.ts              # Utility functions (Tailwind merge, etc.)
+│   │   ├── types/
+│   │   │   └── acne-detection.ts     # 🔬 TypeScript types for acne detection
+│   │   └── middleware.ts             # Next.js middleware for auth protection
+│   ├── data/                         # Data files for RAG
+│   │   ├── pdf/
+│   │   │   └── product.pdf           # Sample PDF document for RAG testing
+│   │   └── text_csv/
+│   │       ├── infomation.txt        # Sample text file (typo: should be information)
+│   │       └── product.csv           # Sample CSV file for structured data
+│   ├── logs/                         # Log files
+│   │   └── mock_server.log           # Mock server logs
+│   ├── model/                        # 🔬 ML Models & Configuration
+│   │   ├── acne_detection_best.pt    # YOLOv7 trained model for acne detection
+│   │   └── model_info.yaml           # Model metadata and configuration
+│   ├── public/                       # Static assets
+│   │   ├── file.svg
+│   │   ├── globe.svg
+│   │   ├── next.svg
+│   │   ├── vercel.svg
+│   │   └── window.svg
+│   ├── .env                          # Environment variables (สร้างไฟล์นี้)
+│   ├── .env.example                  # Template สำหรับ environment variables
+│   ├── .gitignore                    # Git ignore rules
+│   ├── check_mock_server.sh          # 🔬 Script to check mock server status
+│   ├── components.json               # Shadcn/UI configuration
+│   ├── Day8_Note.md                  # บันทึกการอบรม Day 8
+│   ├── eslint.config.mjs             # ESLint configuration
+│   ├── inference_server.py           # 🔬 FastAPI server for YOLOv7 inference
+│   ├── inference_server_mock.py      # 🔬 Mock server for testing without model
+│   ├── next-env.d.ts                 # Next.js TypeScript declarations
+│   ├── next.config.ts                # Next.js configuration
+│   ├── NOTE.md                       # Project notes
+│   ├── package.json                  # Dependencies และ scripts
+│   ├── postcss.config.mjs            # PostCSS configuration
+│   ├── requirements.txt              # 🔬 Python dependencies for ML server
+│   ├── start.sh                      # 🔬 Auto-start script for both servers
+│   ├── test_api.py                   # 🔬 API testing script
+│   ├── tsconfig.json                 # TypeScript configuration
+│   └── README.md                     # Documentation (ในโฟลเดอร์ aichatbot-langchain)
+└── README.md                         # 📄 Main documentation (ไฟล์นี้ - root level)
 ```
 
 ### 📝 คำอธิบายโครงสร้าง

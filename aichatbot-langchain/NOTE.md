@@ -5,6 +5,7 @@
 
 ## 📖 สารบัญ
 
+- [AI Models ที่รองรับ](#ai-models-ที่รองรับ)
 - [ข้อกำหนดของระบบ](#ข้อกำหนดของระบบ)
 - [การติดตั้ง - macOS](#การติดตั้ง---macos)
 - [การติดตั้ง - Windows](#การติดตั้ง---windows)
@@ -12,6 +13,99 @@
 - [การรันโปรเจค](#การรันโปรเจค)
 - [การทดสอบระบบ](#การทดสอบระบบ)
 - [Troubleshooting](#troubleshooting)
+
+---
+
+## 🤖 AI Models ที่รองรับ
+
+โปรเจคนี้รองรับ AI models จากหลายผู้ให้บริการ โดยแบ่งออกเป็น 2 ประเภท:
+
+### ✅ Models ที่ต่อและใช้งานได้แล้ว
+
+#### 1. **OpenAI (ChatGPT)**
+- ✅ **มี API Key แล้ว**
+- **Model**: `gpt-4o-mini`
+- **Embedding**: `text-embedding-3-small`
+- **ใช้ใน API endpoints**:
+  - `/api/chat` - Chat แบบทั่วไป
+  - `/api/analyze-acne` - วิเคราะห์สิว
+  - `/api/chat_08_rag` - RAG (Retrieval Augmented Generation)
+  - `/api/chat_09_rag_tool_calling` - RAG + Tool Calling
+- **ตั้งค่าใน**: `.env` → `OPENAI_API_KEY`
+
+#### 2. **Google (Gemini)**
+- ✅ **มี API Key แล้ว**
+- **Model**: `gemini-2.5-flash`
+- **ความสามารถพิเศษ**: รองรับ **multi-modal** (วิเคราะห์รูปภาพได้)
+- **ใช้ใน API endpoints**:
+  - `/api/analyze-acne` - วิเคราะห์สิวจากรูปภาพ
+- **ตั้งค่าใน**: `.env` → `GOOGLE_API_KEY`
+
+#### 3. **OpenRouter**
+- ✅ **มี API Key แล้ว**
+- **Model**: `google/gemini-2.0-flash-exp:free` (ใช้ฟรี!)
+- **Alternative Models**:
+  - `qwen/qwen3-8b:free`
+  - `qwen/qwen3-235b-a22b-2507`
+- **API Base**: `https://openrouter.ai/api/v1`
+- **ตั้งค่าใน**: `.env` → `OPENROUTER_API_KEY`
+
+---
+
+### ⚠️ Models ที่ยังไม่ได้ต่อ (ใช้งานไม่ได้)
+
+#### 4. **Azure OpenAI**
+- ❌ **API Key ยังไม่ได้ตั้งค่า** (`your-azure-openai-api-key`)
+- **Model**: `gpt-5-mini`
+- **ต้องตั้งค่า**:
+  - `AZURE_OPENAI_API_KEY`
+  - `AZURE_OPENAI_API_INSTANCE_NAME`
+  - `AZURE_OPENAI_API_DEPLOYMENT_NAME`
+  - `AZURE_OPENAI_API_VERSION`
+
+#### 5. **Ollama (Local)**
+- ⚠️ **ต้องติดตั้ง Ollama server ที่เครื่องก่อน**
+- **Model**: `gemma:2b`
+- **API Base**: `http://localhost:11434/v1`
+- **วิธีติดตั้ง**:
+  ```bash
+  # macOS
+  brew install ollama
+  ollama serve
+  ollama pull gemma:2b
+  
+  # Windows
+  # ดาวน์โหลดจาก https://ollama.com/download
+  ```
+
+#### 6. **vLLM (Self-hosted)**
+- ⚠️ **ต้องติดตั้งและรัน vLLM server เอง**
+- **Model**: `meta-llama/llama-3.3-70b-instruct`
+- **API Base**: `http://localhost:8000/v1/chat/completions`
+- **หมายเหตุ**: ต้องการ GPU และ RAM สูง
+
+#### 7. **Gradient AI (DigitalOcean)**
+- ❌ **Access Token ยังไม่ได้ตั้งค่า** (`your-gradient-access-token`)
+- **Model**: `openai-gpt-oss-120b`
+- **ต้องตั้งค่า**:
+  - `GRADIENT_ACCESS_TOKEN`
+  - `GRADIENT_WORKSPACE_ID`
+
+---
+
+### 📊 สรุป
+
+**Models ที่พร้อมใช้งานทันที** (มี API Key แล้ว):
+
+| Provider | Model | Status | Use Case |
+|----------|-------|--------|----------|
+| ✅ OpenAI | `gpt-4o-mini` | พร้อมใช้ | Chat, RAG, Tool Calling |
+| ✅ Google | `gemini-2.5-flash` | พร้อมใช้ | Multi-modal, Image Analysis |
+| ✅ OpenRouter | `gemini-2.0-flash-exp:free` | พร้อมใช้ | Chat (ฟรี) |
+
+**รวม 3 providers** ที่พร้อมใช้งาน! 🚀
+
+> 💡 **คำแนะนำ**: สำหรับการใช้งานทั่วไป แนะนำใช้ **OpenAI GPT-4o-mini** หรือ **Google Gemini** เนื่องจากมีประสิทธิภาพดีและราคาเหมาะสม
 
 ---
 
@@ -244,18 +338,48 @@ npm run dev
 ```
 
 **Terminal 2: Python Backend (Mock Server)**
+
+##### วิธีที่ 1: รันแบบ Foreground (เห็น log ใน terminal)
 ```bash
-# เปิดใช้งาน virtual environment
+# ใช้ Python interpreter ที่ config ไว้ในโปรเจค
+python inference_server_mock.py
+
+# หรือระบุ path เต็ม (ถ้าใช้ pyenv)
+/Users/kritchanaxt_./.pyenv/versions/3.11.4/bin/python inference_server_mock.py
+
+# หรือถ้ามี virtual environment
 source venv/bin/activate
+python inference_server_mock.py
+```
 
-# รัน mock server
-python3 inference_server_mock.py
+##### วิธีที่ 2: รันแบบ Background (ทำงานอยู่เบื้องหลัง)
+```bash
+# รันในพื้นหลังและเขียน log ไปที่ไฟล์
+nohup python inference_server_mock.py > logs/mock_server.log 2>&1 &
 
-# หรือรันในพื้นหลัง
-nohup python3 inference_server_mock.py > logs/mock_server.log 2>&1 &
+# หรือใช้กับ pyenv
+nohup /Users/kritchanaxt_./.pyenv/versions/3.11.4/bin/python inference_server_mock.py > logs/mock_server.log 2>&1 &
 
-# ตรวจสอบ process
-ps aux | grep inference_server_mock.py
+# ดู log แบบ real-time
+tail -f logs/mock_server.log
+```
+
+##### ตรวจสอบและจัดการ Process
+```bash
+# ตรวจสอบว่า server รันอยู่หรือไม่
+ps aux | grep inference_server_mock | grep -v grep
+
+# ดูว่า port 8000 ถูกใช้งานหรือไม่
+lsof -i :8000
+
+# ทดสอบ server
+curl http://localhost:8000/health
+
+# หยุด server (ถ้ารู้ Process ID)
+kill <PID>
+
+# หรือหยุดทั้งหมด
+pkill -f inference_server_mock.py
 ```
 
 #### วิธีที่ 2: ใช้ Script อัตโนมัติ
@@ -282,12 +406,39 @@ REM เปิดที่ http://localhost:3000
 ```
 
 **Command Prompt 2: Python Backend (Mock Server)**
-```cmd
-REM เปิดใช้งาน virtual environment
-venv\Scripts\activate.bat
 
-REM รัน mock server
+##### วิธีที่ 1: รันแบบ Foreground (เห็น log ใน terminal)
+```cmd
+REM รันโดยตรง
 python inference_server_mock.py
+
+REM หรือถ้ามี virtual environment
+venv\Scripts\activate.bat
+python inference_server_mock.py
+```
+
+##### วิธีที่ 2: รันแบบ Background (ใช้ Start command)
+```cmd
+REM เปิด window ใหม่และรัน
+start "Python Backend" python inference_server_mock.py
+
+REM หรือกับ virtual environment
+start "Python Backend" cmd /k "venv\Scripts\activate.bat && python inference_server_mock.py"
+```
+
+##### ตรวจสอบและจัดการ Process
+```cmd
+REM ดูว่า port 8000 ถูกใช้งานหรือไม่
+netstat -ano | findstr :8000
+
+REM ทดสอบ server (PowerShell)
+Invoke-RestMethod -Uri http://localhost:8000/health
+
+REM หรือเปิดใน browser
+start http://localhost:8000/health
+
+REM หยุด server (ถ้ารู้ Process ID จาก netstat)
+taskkill /PID <PID> /F
 ```
 
 #### วิธีที่ 2: สร้าง Batch Script
@@ -479,39 +630,3 @@ bash start.sh
 2. เปิด Browser Console (F12) ดูข้อผิดพลาด
 3. ตรวจสอบ quota/credits ของ API
 4. ลองเปลี่ยนโมเดล AI
-
-## ✅ Checklist ก่อนเริ่มพัฒนา
-
-- [ ] ติดตั้ง Node.js (18.x+)
-- [ ] ติดตั้ง Python (3.11+)
-- [ ] Clone repository
-- [ ] ติดตั้ง npm dependencies (`npm install`)
-- [ ] สร้าง virtual environment Python (`python -m venv venv`)
-- [ ] ติดตั้ง Python dependencies (`pip install -r requirements.txt`)
-- [ ] สร้างไฟล์ `.env.local` และกรอก environment variables
-- [ ] ตั้งค่า Supabase (database, auth, storage)
-- [ ] รับ API keys (OpenAI หรือ Google AI)
-- [ ] ทดสอบรัน Next.js (`npm run dev`)
-- [ ] ทดสอบรัน Python backend (`python inference_server_mock.py`)
-- [ ] ทดสอบ health endpoint (`curl http://localhost:8000/health`)
-- [ ] ทดสอบ login/signup
-- [ ] ทดสอบ chat feature
-- [ ] ทดสอบ acne detection feature
-
----
-
-## 🆘 ขอความช่วยเหลือ
-
-ถ้าพบปัญหาที่แก้ไม่ได้:
-
-1. ตรวจสอบ Browser Console (F12)
-2. ตรวจสอบ Terminal logs
-3. ตรวจสอบ Python logs (`logs/mock_server.log`)
-4. ตรวจสอบเอกสาร Troubleshooting ด้านบน
-5. ตรวจสอบ issues ใน repository
-6. สร้าง issue ใหม่พร้อมข้อมูล:
-   - OS และ version
-   - Node.js และ Python version
-   - Error messages
-   - Steps to reproduce
-
