@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ml-server": "python inference_server.py",
+    "test-api": "python test_api.py"
   },
   "dependencies": {
     "@ai-sdk/langchain": "^1.0.56",

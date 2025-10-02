@@ -1,0 +1,16 @@
+INFO:     Started server process [55009]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+============================================================
+🚀 Starting Mock YOLOv7 API Server
+============================================================
+✓ Mock server ready!
+INFO:     127.0.0.1:64107 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64217 - "POST /detect?confidence_threshold=0.25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64510 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49464 - "POST /detect?confidence_threshold=0.25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49620 - "POST /detect?confidence_threshold=0.25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49894 - "POST /detect?confidence_threshold=0.25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50372 - "POST /detect?confidence_threshold=0.25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50706 - "POST /detect?confidence_threshold=0.25 HTTP/1.1" 200 OK

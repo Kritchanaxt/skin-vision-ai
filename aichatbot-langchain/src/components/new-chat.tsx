@@ -183,6 +183,12 @@ export function NewChat() {
   const [attachedFiles, setAttachedFiles] = useState<File[]>([])
   
   /**
+   * สถานะการตรวจจับสิวจากภาพ
+   * แสดง loading state เมื่อกำลังประมวลผลภาพ
+   */
+  const [isDetectingAcne, setIsDetectingAcne] = useState(false)
+  
+  /**
    * Reference สำหรับ file input element
    * ใช้สำหรับเปิด file dialog
    */
@@ -195,10 +201,113 @@ export function NewChat() {
   /**
    * จัดการการเลือกไฟล์
    * รับ event จาก file input และเพิ่มไฟล์ลงใน attachedFiles
+   * หากเป็นภาพ จะทำการตรวจจับสิวอัตโนมัติ
    */
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || [])
     setAttachedFiles(prev => [...prev, ...files])
+    
+    // ตรวจสอบว่ามีภาพหรือไม่
+    const imageFiles = files.filter(file => file.type.startsWith('image/'))
+    
+    if (imageFiles.length > 0) {
+      // ถ้ามีภาพ ให้ตรวจจับสิวอัตโนมัติ
+      for (const imageFile of imageFiles) {
+        await detectAcneFromImage(imageFile)
+      }
+    }
+  }
+  
+  /**
+   * ตรวจจับสิวจากภาพโดยอัตโนมัติ
+   * ส่งภาพไปยัง API และรับผลการตรวจจับกลับมา
+   * จากนั้นส่งข้อความไปยัง AI โดยอัตโนมัติ
+   */
+  const detectAcneFromImage = async (imageFile: File) => {
+    setIsDetectingAcne(true)
+    try {
+      // สร้าง FormData สำหรับส่งภาพ
+      const formData = new FormData()
+      formData.append('file', imageFile)
+      formData.append('confidence_threshold', '0.25')
+      
+      // ส่งไปยัง detection API
+      const detectionResponse = await fetch('/api/detect-acne', {
+        method: 'POST',
+        body: formData,
+      })
+      
+      if (!detectionResponse.ok) {
+        console.error('Detection failed')
+        return
+      }
+      
+      const detectionResult = await detectionResponse.json()
+      
+      // ส่งผลการตรวจจับไปวิเคราะห์ด้วย LLM
+      const analysisResponse = await fetch('/api/analyze-acne', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          detections: detectionResult.detections,
+          detections_count: detectionResult.detections_count,
+          image_size: detectionResult.image_size,
+          model: selectedModel || 'gemini-pro',
+        }),
+      })
+      
+      if (!analysisResponse.ok) {
+        console.error('Analysis failed')
+        return
+      }
+      
+      const analysisResult = await analysisResponse.json()
+      
+      // สร้างข้อความสำหรับส่งไปยัง AI
+      const analysisText = `📊 **ผลการตรวจจับสิวจากภาพ ${imageFile.name}:**\n\n` +
+        `✅ จำนวนสิวที่พบ: ${detectionResult.detections_count} จุด\n` +
+        `📈 ความรุนแรง: ${analysisResult.detection_summary?.severity || 'ไม่ทราบ'}\n\n` +
+        `กรุณาวิเคราะห์ผลและให้คำแนะนำการดูแลผิวตามผลการตรวจจับนี้`
+      
+      // ส่งข้อความไปยัง AI โดยอัตโนมัติ
+      if (userId) {
+        // เพิ่มข้อมูลไฟล์ในข้อความ
+        const fileInfo = `📎 ${imageFile.name} (${imageFile.type})`
+        const fullMessage = `${analysisText}\n\nไฟล์แนบ:\n${fileInfo}`
+        
+        const messageToSend = {
+          role: 'user' as const,
+          parts: [{ type: 'text' as const, text: fullMessage }],
+        }
+
+        // ส่งข้อความไปยัง AI
+        sendMessage(messageToSend, {
+          body: {
+            userId: userId,
+            sessionId: sessionId,
+            attachedFiles: [{
+              name: imageFile.name,
+              type: imageFile.type,
+              size: imageFile.size
+            }],
+          },
+        })
+
+        // รีเซ็ต UI state
+        setPrompt("")
+        setAttachedFiles([])
+        setShowWelcome(false)
+      }
+      
+    } catch (error) {
+      console.error('Error detecting acne:', error)
+      // แสดง error message ใน input
+      setPrompt((prev: string) => prev + `\n\n⚠️ เกิดข้อผิดพลาดในการตรวจจับสิวจากภาพ ${imageFile.name}`)
+    } finally {
+      setIsDetectingAcne(false)
+    }
   }
 
   /**
@@ -638,6 +747,12 @@ export function NewChat() {
           {/* แสดงสถานะการโหลดประวัติ */}
           {isLoadingHistory && 
             <div className="text-blue-500 italic mb-2 text-sm">📚 กำลังโหลดประวัติการสนทนา...</div>
+          }
+          
+          {isDetectingAcne && 
+            <div className="text-purple-500 italic mb-2 text-sm animate-pulse">
+              🔬 กำลังตรวจจับสิวจากภาพและวิเคราะห์ด้วย AI...
+            </div>
           }
           
           {/* ============================================================================ */}

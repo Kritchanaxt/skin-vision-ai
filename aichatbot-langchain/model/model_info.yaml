@@ -1,0 +1,15 @@
+classes:
+- acne
+created: '2025-10-01 21:10:34'
+framework: PyTorch + YOLOv7
+input_size: 640x640
+model_name: YOLOv7 Acne Detection
+performance: optimized for CPU inference
+size_mb: 71.3
+trained_on: synthetic + real acne images
+type: object_detection
+usage:
+  input: RGB image 640x640
+  load: torch.hub.load() or direct PyTorch loading
+  output: bounding boxes with confidence scores
+version: v1.0
