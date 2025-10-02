@@ -187,10 +187,6 @@ open http://localhost:3000/detect
 ```
 
 ### 📚 เอกสารเพิ่มเติม
-
-- [README_ACNE_DETECTION.md](./aichatbot-langchain/README_ACNE_DETECTION.md) - เอกสารฉบับเต็ม
-- [QUICKSTART.md](./aichatbot-langchain/QUICKSTART.md) - คู่มือเริ่มต้นใช้งาน
-- [YOLOV7_TROUBLESHOOTING.md](./aichatbot-langchain/YOLOV7_TROUBLESHOOTING.md) - แก้ปัญหา YOLOv7
 - [Original YOLOv7 Repository](https://github.com/WongKinYiu/yolov7) - Official YOLOv7
 - [Skin Disease Recognition Project](https://github.com/Kritchanaxt/skin-disease-recognition) - โปรเจ็กต์ต้นแบบ
 
