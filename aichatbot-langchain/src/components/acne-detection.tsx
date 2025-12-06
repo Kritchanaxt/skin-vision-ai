@@ -43,12 +43,6 @@ interface DetectionResult {
   confidence_threshold: number;
 }
 
-interface Detection {
-  class_name: string;
-  confidence: number;
-  bbox?: number[];
-}
-
 interface AnalysisResult {
   success: boolean;
   analysis: string;
