@@ -1,6 +1,4 @@
 {
   "framework": "nextjs",
-  "buildCommand": "cd aichatbot-langchain && npm run build",
-  "outputDirectory": "aichatbot-langchain/.next",
-  "installCommand": "cd aichatbot-langchain && npm install"
+  "rootDirectory": "aichatbot-langchain"
 }
