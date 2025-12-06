@@ -124,7 +124,11 @@ ${detectionSummary.length > 0
       analysisText = response.content;
     } else if (Array.isArray(response.content)) {
       analysisText = response.content
-        .map((item: { text?: string }) => item.text || '')
+        .map((item) => {
+          if (typeof item === 'string') return item;
+          if ('text' in item) return item.text;
+          return '';
+        })
         .join('');
     }
 
