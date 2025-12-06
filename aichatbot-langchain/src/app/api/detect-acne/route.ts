@@ -90,7 +90,7 @@ export async function GET() {
     const response = await fetch(`${PYTHON_API_URL}/health`);
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { status: 'unhealthy', error: 'Cannot connect to Python API' },
       { status: 503 }

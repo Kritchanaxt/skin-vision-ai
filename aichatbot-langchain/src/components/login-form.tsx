@@ -44,12 +44,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     }
   }
 
-  // เพิ่มการจัดการ autoComplete ใน handleSubmit
-  const handleFillDemo = () => {
-    setEmail('samit@email.com')
-    setPassword('123456')
-  }
-
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
