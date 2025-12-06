@@ -1,7 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cd aichatbot-langchain && npm install",
-  "buildCommand": "cd aichatbot-langchain && npm run build",
-  "outputDirectory": "aichatbot-langchain/.next",
-  "framework": "nextjs"
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }
