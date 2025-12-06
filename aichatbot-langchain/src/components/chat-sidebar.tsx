@@ -579,15 +579,14 @@ export function ChatSidebar({ display_name, email, userId }: ChatSidebarProps) {
    * 
    * Purpose:
    * - กรองรายการ sessions ตามคำค้นหาที่ผู้ใช้ป้อน
-   * - ค้นหาใน title และ first_message ของ sessions
+   * - ค้นหาใน title ของ sessions
    */
   const filteredSessions = useMemo(() => {
     if (!searchQuery.trim()) return sessions
     
     return sessions.filter(session => {
       const titleMatch = session.title?.toLowerCase().includes(searchQuery.toLowerCase())
-      const messageMatch = session.first_message?.toLowerCase().includes(searchQuery.toLowerCase())
-      return titleMatch || messageMatch
+      return titleMatch
     })
   }, [sessions, searchQuery])
   
